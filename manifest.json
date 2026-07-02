@@ -1,6 +1,6 @@
 {
-  "name": "BetRadar BR — Análise de Apostas",
-  "short_name": "BetRadar BR",
+  "name": "Trader Futebol — Análise de Apostas",
+  "short_name": "Trader Futebol",
   "description": "Análise diária de jogos, comparação de odds das casas do Brasil e melhores apostas de valor do dia.",
   "start_url": "./index.html",
   "scope": "./",

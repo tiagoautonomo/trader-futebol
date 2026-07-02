@@ -1,4 +1,4 @@
-# BetRadar BR ⚽
+# Trader Futebol ⚽
 
 Aplicativo web (PWA) de **análise de jogos e comparação de odds** das casas de apostas.
 Mostra os jogos do dia, compara as odds de várias casas, aponta as apostas de maior
