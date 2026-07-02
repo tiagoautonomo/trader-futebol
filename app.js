@@ -43,25 +43,41 @@ const MERCADOS = [
       { chave: "um_dois", rotulo: "12", desc: (j) => j.timeCasa + " ou " + j.timeFora },
       { chave: "x_dois",  rotulo: "X2", desc: (j) => "Empate ou " + j.timeFora },
     ] },
+  { id: "dnb", nome: "Empate anula (Draw No Bet)", campo: "oddsDnb",
+    outcomes: [
+      { chave: "casa", rotulo: "1", desc: (j) => j.timeCasa + " — empate devolve" },
+      { chave: "fora", rotulo: "2", desc: (j) => j.timeFora + " — empate devolve" },
+    ] },
   { id: "gols", nome: "Total de gols", campo: "oddsGols",
     outcomes: [
       { chave: "over",  rotulo: "+2.5", desc: () => "Mais de 2,5 gols" },
       { chave: "under", rotulo: "-2.5", desc: () => "Menos de 2,5 gols" },
+    ] },
+  { id: "btts", nome: "Ambas marcam", campo: "oddsBtts",
+    outcomes: [
+      { chave: "sim", rotulo: "Sim", desc: () => "Ambas marcam: Sim" },
+      { chave: "nao", rotulo: "Não", desc: () => "Ambas marcam: Não" },
+    ] },
+  { id: "primeiro", nome: "Primeiro a marcar", campo: "oddsPrimeiro",
+    outcomes: [
+      { chave: "casa",   rotulo: "1º", desc: (j) => j.timeCasa + " marca 1º" },
+      { chave: "nenhum", rotulo: "Ng", desc: () => "Nenhum gol" },
+      { chave: "fora",   rotulo: "2º", desc: (j) => j.timeFora + " marca 1º" },
     ] },
   { id: "escanteios", nome: "Escanteios", campo: "oddsEsc",
     outcomes: [
       { chave: "over",  rotulo: "+9.5", desc: () => "Mais de 9,5 escanteios" },
       { chave: "under", rotulo: "-9.5", desc: () => "Menos de 9,5 escanteios" },
     ] },
+  { id: "escAsi", nome: "Escanteio asiático (handicap 0)", campo: "oddsEscAsi",
+    outcomes: [
+      { chave: "casa", rotulo: "1", desc: (j) => j.timeCasa + " + escanteios (empate anula)" },
+      { chave: "fora", rotulo: "2", desc: (j) => j.timeFora + " + escanteios (empate anula)" },
+    ] },
   { id: "cartoes", nome: "Cartões", campo: "oddsCartoes",
     outcomes: [
       { chave: "over",  rotulo: "+3.5", desc: () => "Mais de 3,5 cartões" },
       { chave: "under", rotulo: "-3.5", desc: () => "Menos de 3,5 cartões" },
-    ] },
-  { id: "btts", nome: "Ambas marcam", campo: "oddsBtts",
-    outcomes: [
-      { chave: "sim", rotulo: "Sim", desc: () => "Ambas marcam: Sim" },
-      { chave: "nao", rotulo: "Não", desc: () => "Ambas marcam: Não" },
     ] },
 ];
 
@@ -96,22 +112,38 @@ function gerarJogosDemo() {
     const share = 0.5 + (j.forcaCasa - j.forcaFora) * 0.6; // 0..1
     const lh = j.gols * Math.min(0.65, Math.max(0.35, share));
     const la = j.gols - lh;
+    // escanteios por time (viés menor que o dos gols)
+    const cShare = Math.min(0.62, Math.max(0.38, 0.5 + (j.forcaCasa - j.forcaFora) * 0.4));
+    const ch = j.esc * cShare, ca = j.esc - ch;
+
     const pOver = probOver(j.gols, 2.5);
     const pBtts = (1 - Math.exp(-lh)) * (1 - Math.exp(-la));
     const pEsc = probOver(j.esc, 9.5);
     const pCrt = probOver(j.crt, 3.5);
+    // empate anula (draw no bet): tira o empate e renormaliza
+    const pCasaDnb = pCasa / (pCasa + pFora), pForaDnb = pFora / (pCasa + pFora);
+    // primeiro a marcar (processos de Poisson concorrentes)
+    const pNenhum = Math.exp(-(lh + la));
+    const pCasaPrim = (1 - pNenhum) * lh / (lh + la);
+    const pForaPrim = (1 - pNenhum) * la / (lh + la);
+    // escanteio asiático handicap 0 (quem bate mais; empate anula)
+    const pCasaAsi = ch / (ch + ca), pForaAsi = ca / (ch + ca);
 
-    const odds = {}, oddsDupla = {}, oddsGols = {}, oddsEsc = {}, oddsCartoes = {}, oddsBtts = {};
+    const odds = {}, oddsDupla = {}, oddsDnb = {}, oddsGols = {}, oddsBtts = {},
+          oddsPrimeiro = {}, oddsEsc = {}, oddsEscAsi = {}, oddsCartoes = {};
     CASAS_BR.forEach((c) => {
-      odds[c]        = { casa: +preco(pCasa).toFixed(2), empate: +preco(pEmpate).toFixed(2), fora: +preco(pFora).toFixed(2) };
-      oddsDupla[c]   = { um_x: +preco(pCasa + pEmpate).toFixed(2), um_dois: +preco(pCasa + pFora).toFixed(2), x_dois: +preco(pEmpate + pFora).toFixed(2) };
-      oddsGols[c]    = { over: +preco(pOver).toFixed(2), under: +preco(1 - pOver).toFixed(2) };
-      oddsEsc[c]     = { over: +preco(pEsc).toFixed(2), under: +preco(1 - pEsc).toFixed(2) };
-      oddsCartoes[c] = { over: +preco(pCrt).toFixed(2), under: +preco(1 - pCrt).toFixed(2) };
-      oddsBtts[c]    = { sim: +preco(pBtts).toFixed(2), nao: +preco(1 - pBtts).toFixed(2) };
+      odds[c]         = { casa: +preco(pCasa).toFixed(2), empate: +preco(pEmpate).toFixed(2), fora: +preco(pFora).toFixed(2) };
+      oddsDupla[c]    = { um_x: +preco(pCasa + pEmpate).toFixed(2), um_dois: +preco(pCasa + pFora).toFixed(2), x_dois: +preco(pEmpate + pFora).toFixed(2) };
+      oddsDnb[c]      = { casa: +preco(pCasaDnb).toFixed(2), fora: +preco(pForaDnb).toFixed(2) };
+      oddsGols[c]     = { over: +preco(pOver).toFixed(2), under: +preco(1 - pOver).toFixed(2) };
+      oddsBtts[c]     = { sim: +preco(pBtts).toFixed(2), nao: +preco(1 - pBtts).toFixed(2) };
+      oddsPrimeiro[c] = { casa: +preco(pCasaPrim).toFixed(2), nenhum: +preco(pNenhum).toFixed(2), fora: +preco(pForaPrim).toFixed(2) };
+      oddsEsc[c]      = { over: +preco(pEsc).toFixed(2), under: +preco(1 - pEsc).toFixed(2) };
+      oddsEscAsi[c]   = { casa: +preco(pCasaAsi).toFixed(2), fora: +preco(pForaAsi).toFixed(2) };
+      oddsCartoes[c]  = { over: +preco(pCrt).toFixed(2), under: +preco(1 - pCrt).toFixed(2) };
     });
     return { id: "demo-" + i, liga: j.liga, timeCasa: j.casa, timeFora: j.fora, hora: j.h,
-             odds, oddsDupla, oddsGols, oddsEsc, oddsCartoes, oddsBtts };
+             odds, oddsDupla, oddsDnb, oddsGols, oddsBtts, oddsPrimeiro, oddsEsc, oddsEscAsi, oddsCartoes };
   });
 }
 
@@ -129,14 +161,20 @@ async function buscarJogosReais(apiKey) {
       for (const ev of dados) {
         const inicio = new Date(ev.commence_time);
         if (inicio.toDateString() !== hoje.toDateString()) continue;
-        const odds = {}, oddsGols = {};
+        const odds = {}, oddsDupla = {}, oddsDnb = {}, oddsGols = {};
         for (const bk of ev.bookmakers) {
           const nome = MAPA_CASAS_API[bk.key] || bk.title;
           const h2h = bk.markets.find((m) => m.key === "h2h");
           if (h2h) {
             const b = (n) => h2h.outcomes.find((o) => o.name === n);
             const oc = b(ev.home_team), of = b(ev.away_team), oe = b("Draw");
-            if (oc && of && oe) odds[nome] = { casa: oc.price, empate: oe.price, fora: of.price };
+            if (oc && of && oe) {
+              odds[nome] = { casa: oc.price, empate: oe.price, fora: of.price };
+              // deriva Dupla chance e Empate anula a partir das probabilidades implícitas reais
+              const ic = 1 / oc.price, ie = 1 / oe.price, iff = 1 / of.price;
+              oddsDupla[nome] = { um_x: +(1 / (ic + ie)).toFixed(2), um_dois: +(1 / (ic + iff)).toFixed(2), x_dois: +(1 / (ie + iff)).toFixed(2) };
+              oddsDnb[nome] = { casa: +((ic + iff) / ic).toFixed(2), fora: +((ic + iff) / iff).toFixed(2) };
+            }
           }
           const tot = bk.markets.find((m) => m.key === "totals");
           if (tot) {
@@ -146,10 +184,11 @@ async function buscarJogosReais(apiKey) {
           }
         }
         if (Object.keys(odds).length >= 2) {
+          const ok2 = (o) => (Object.keys(o).length >= 2 ? o : null);
           jogos.push({
             id: ev.id, liga: liga.nome, timeCasa: ev.home_team, timeFora: ev.away_team,
             hora: inicio.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
-            odds, oddsGols: Object.keys(oddsGols).length >= 2 ? oddsGols : null, oddsBtts: null,
+            odds, oddsDupla: ok2(oddsDupla), oddsDnb: ok2(oddsDnb), oddsGols: ok2(oddsGols),
           });
         }
       }
