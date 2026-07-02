@@ -1,0 +1,381 @@
+/* ===== BetRadar BR — design original, tema escuro esportivo ===== */
+:root {
+  --fundo: #0e1420;
+  --painel: #171f2e;
+  --painel-2: #1e2838;
+  --borda: #2a3648;
+  --texto: #e8edf4;
+  --texto-2: #93a1b5;
+  --verde: #2ecc71;
+  --verde-escuro: #14532d;
+  --dourado: #f5b942;
+  --vermelho: #e74c3c;
+  --azul: #3b82f6;
+  --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+/* ---- Topbar ---- */
+.topbar {
+  background: linear-gradient(180deg, #141c2b, #10161f);
+  border-bottom: 2px solid var(--dourado);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 1.35rem; }
+.logo-text strong { color: var(--dourado); }
+.logo-icon { font-size: 1.5rem; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.data-hoje { color: var(--texto-2); font-size: .9rem; text-transform: capitalize; }
+
+.btn-primary {
+  background: var(--dourado); color: #1a1a1a; border: none;
+  padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer;
+}
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-ghost {
+  background: transparent; color: var(--texto-2);
+  border: 1px solid var(--borda); padding: 8px 14px;
+  border-radius: 8px; cursor: pointer;
+}
+.btn-ghost:hover { color: var(--texto); border-color: var(--texto-2); }
+
+.oculto { display: none !important; }
+
+/* ---- Guia como começar ---- */
+.guia {
+  margin-top: 18px; background: linear-gradient(160deg, var(--painel-2), var(--painel));
+  border: 1px solid var(--borda); border-radius: var(--radius); padding: 18px 20px;
+}
+.guia-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
+.guia-titulo { font-size: 1.15rem; }
+.guia-passos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.passo { display: flex; gap: 12px; align-items: flex-start; }
+.passo-num {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--dourado); color: #1a1a1a; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.passo strong { display: block; margin-bottom: 2px; }
+.passo p { font-size: .84rem; color: var(--texto-2); }
+.guia-glossario {
+  display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px;
+  padding-top: 14px; border-top: 1px solid var(--borda); font-size: .82rem; color: var(--texto-2);
+}
+.guia-glossario strong { color: var(--dourado); }
+.guia-aviso { margin-top: 12px; font-size: .8rem; color: var(--dourado); }
+.btn-abrir-guia { margin: 16px 0 0; }
+
+/* ---- Oportunidade do dia ---- */
+.oportunidade {
+  margin-top: 20px; border-radius: 14px; padding: 22px 24px;
+  background: linear-gradient(135deg, #1c2b1f, #14532d 140%);
+  border: 1px solid var(--verde); position: relative; overflow: hidden;
+}
+.opo-tag {
+  display: inline-block; background: var(--verde); color: #06130a;
+  font-size: .72rem; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px;
+}
+.opo-jogo { font-size: 1.05rem; color: var(--texto-2); margin-bottom: 4px; }
+.opo-selecao { font-size: 1.6rem; font-weight: 800; margin-bottom: 14px; }
+.opo-selecao .opo-odd { color: var(--verde); }
+.opo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+.opo-box { background: rgba(0,0,0,.25); border-radius: 10px; padding: 12px 14px; }
+.opo-box .opo-label { font-size: .72rem; color: var(--texto-2); text-transform: uppercase; letter-spacing: .5px; }
+.opo-box .opo-valor { font-size: 1.25rem; font-weight: 800; margin-top: 2px; }
+.opo-box .opo-valor.verde { color: var(--verde); }
+.opo-box .opo-valor.dourado { color: var(--dourado); }
+.opo-rodape { margin-top: 14px; font-size: .82rem; color: var(--texto-2); }
+.opo-rodape strong { color: var(--texto); }
+
+/* ---- Banner modo ---- */
+.banner-modo {
+  margin: 16px 0 0; padding: 10px 14px; border-radius: var(--radius);
+  font-size: .9rem; border: 1px solid var(--borda); background: var(--painel);
+  color: var(--texto-2);
+}
+.banner-modo.demo { border-color: var(--dourado); }
+.banner-modo.real { border-color: var(--verde); }
+.banner-modo.erro { border-color: var(--vermelho); color: var(--vermelho); }
+
+/* ---- Seções ---- */
+.secao { margin: 34px 0; }
+.secao-titulo { font-size: 1.25rem; margin-bottom: 4px; }
+.secao-sub { color: var(--texto-2); font-size: .88rem; margin-bottom: 16px; }
+
+/* ---- Barra Kelly ---- */
+.kelly-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+  background: var(--painel); border: 1px solid var(--borda);
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px;
+  font-size: .9rem;
+}
+.kelly-bar label { color: var(--texto-2); }
+.kelly-bar input {
+  width: 100px; padding: 6px 10px; border-radius: 8px;
+  border: 1px solid var(--borda); background: var(--fundo); color: var(--texto);
+  font-weight: 700;
+}
+.kelly-frac { display: flex; align-items: center; gap: 6px; }
+.kelly-frac span { color: var(--texto-2); }
+.frac-btn {
+  background: var(--fundo); border: 1px solid var(--borda); color: var(--texto-2);
+  padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: .82rem;
+}
+.frac-btn.ativo { background: var(--dourado); color: #1a1a1a; font-weight: 700; border-color: var(--dourado); }
+
+.pick-stake {
+  margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--borda);
+  font-size: .9rem; display: flex; justify-content: space-between; align-items: center;
+}
+.pick-stake-label { color: var(--texto-2); font-size: .8rem; }
+.pick-stake-valor { color: var(--dourado); font-weight: 800; font-size: 1.05rem; }
+.pick-stake-pct { color: var(--texto-2); font-size: .8rem; }
+
+/* ---- Picks do dia ---- */
+.picks-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+.pick-card {
+  background: linear-gradient(160deg, var(--painel-2), var(--painel));
+  border: 1px solid var(--borda); border-left: 4px solid var(--verde);
+  border-radius: var(--radius); padding: 16px;
+}
+.pick-card.destaque { border-left-color: var(--dourado); box-shadow: 0 0 18px rgba(245,185,66,.12); }
+.pick-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.pick-liga { font-size: .75rem; color: var(--texto-2); text-transform: uppercase; letter-spacing: .5px; }
+.pick-estrelas { color: var(--dourado); font-size: .85rem; }
+.pick-jogo { font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
+.pick-selecao {
+  display: inline-block; background: var(--verde-escuro); color: var(--verde);
+  padding: 3px 10px; border-radius: 20px; font-size: .85rem; font-weight: 700;
+  margin-bottom: 10px;
+}
+.pick-detalhes { font-size: .85rem; color: var(--texto-2); display: grid; gap: 3px; }
+.pick-detalhes strong { color: var(--texto); }
+.pick-odd-casa { color: var(--dourado); font-weight: 700; }
+.pick-ev { color: var(--verde); font-weight: 700; }
+
+/* ---- Ranking casas ---- */
+.ranking-grid { display: grid; gap: 8px; }
+.casa-linha {
+  display: grid; grid-template-columns: 42px 1fr 130px 150px;
+  align-items: center; gap: 12px;
+  background: var(--painel); border: 1px solid var(--borda);
+  border-radius: var(--radius); padding: 10px 16px;
+}
+.casa-pos { font-size: 1.2rem; font-weight: 800; color: var(--texto-2); }
+.casa-linha:first-child .casa-pos { color: var(--dourado); }
+.casa-nome { font-weight: 700; }
+.casa-stat { font-size: .85rem; color: var(--texto-2); text-align: right; }
+.casa-stat strong { color: var(--verde); font-size: 1rem; }
+.casa-barra-wrap { grid-column: 1 / -1; height: 5px; background: var(--fundo); border-radius: 3px; overflow: hidden; }
+.casa-barra { height: 100%; background: linear-gradient(90deg, var(--verde), var(--dourado)); border-radius: 3px; }
+
+/* ---- Filtros ---- */
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.filtro-btn {
+  background: var(--painel); border: 1px solid var(--borda); color: var(--texto-2);
+  padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: .85rem;
+}
+.filtro-btn.ativo { background: var(--dourado); color: #1a1a1a; font-weight: 700; border-color: var(--dourado); }
+
+/* ---- Lista de jogos ---- */
+.lista-jogos { display: grid; gap: 10px; }
+.liga-header {
+  font-size: .8rem; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--dourado); margin: 14px 0 2px; font-weight: 700;
+}
+.jogo-card {
+  background: var(--painel); border: 1px solid var(--borda);
+  border-radius: var(--radius); overflow: hidden;
+}
+.jogo-resumo {
+  display: grid; grid-template-columns: 64px 1fr repeat(3, 86px) 30px;
+  align-items: center; gap: 10px; padding: 13px 16px; cursor: pointer;
+}
+.jogo-resumo:hover { background: var(--painel-2); }
+.jogo-hora { color: var(--texto-2); font-size: .9rem; font-weight: 600; }
+.jogo-times { display: grid; gap: 2px; font-weight: 600; font-size: .95rem; }
+.odd-melhor {
+  text-align: center; background: var(--fundo); border: 1px solid var(--borda);
+  border-radius: 8px; padding: 5px 4px;
+}
+.odd-melhor .odd-label { display: block; font-size: .65rem; color: var(--texto-2); }
+.odd-melhor .odd-valor { font-weight: 800; color: var(--verde); font-size: .95rem; }
+.odd-melhor .odd-casa { display: block; font-size: .62rem; color: var(--dourado); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jogo-seta { color: var(--texto-2); text-align: center; transition: transform .2s; }
+.jogo-card.aberto .jogo-seta { transform: rotate(180deg); }
+
+/* tabela expandida */
+.jogo-detalhe { display: none; border-top: 1px solid var(--borda); padding: 14px 16px; }
+.jogo-card.aberto .jogo-detalhe { display: block; }
+.tabela-odds { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.tabela-odds th, .tabela-odds td { padding: 7px 10px; text-align: center; }
+.tabela-odds th { color: var(--texto-2); font-weight: 600; font-size: .78rem; text-transform: uppercase; }
+.tabela-odds td:first-child, .tabela-odds th:first-child { text-align: left; }
+.tabela-odds tr { border-bottom: 1px solid var(--borda); }
+.tabela-odds tr:last-child { border-bottom: none; }
+.celula-melhor { color: var(--verde); font-weight: 800; background: rgba(46, 204, 113, .08); border-radius: 6px; }
+.analise-jogo {
+  margin-top: 12px; padding: 12px; background: var(--fundo);
+  border-radius: 8px; font-size: .86rem; color: var(--texto-2);
+}
+.analise-jogo strong { color: var(--texto); }
+
+/* ---- Blocos de mercado ---- */
+.mercado-bloco { margin-bottom: 14px; }
+.mercado-nome { font-size: .78rem; text-transform: uppercase; letter-spacing: .5px; color: var(--dourado); margin-bottom: 4px; font-weight: 700; }
+
+/* ---- Histórico ---- */
+.historico { display: grid; gap: 14px; }
+.hist-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.stat {
+  background: var(--painel); border: 1px solid var(--borda); border-radius: var(--radius);
+  padding: 14px; text-align: center; display: grid; gap: 4px;
+}
+.stat-num { font-size: 1.5rem; font-weight: 800; }
+.stat-num.pos { color: var(--verde); }
+.stat-num.neg { color: var(--vermelho); }
+.stat-lbl { font-size: .72rem; color: var(--texto-2); text-transform: uppercase; letter-spacing: .5px; }
+
+.hist-dia { background: var(--painel); border: 1px solid var(--borda); border-radius: var(--radius); overflow: hidden; }
+.hist-data { padding: 8px 16px; font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--dourado); font-weight: 700; border-bottom: 1px solid var(--borda); }
+.hist-linha {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 11px 16px; border-bottom: 1px solid var(--borda); border-left: 3px solid transparent;
+}
+.hist-linha:last-child { border-bottom: none; }
+.hist-linha.status-green { border-left-color: var(--verde); background: rgba(46,204,113,.05); }
+.hist-linha.status-red { border-left-color: var(--vermelho); background: rgba(231,76,60,.05); }
+.hist-info { display: grid; gap: 2px; }
+.hist-jogo { font-weight: 700; font-size: .92rem; }
+.hist-sel { font-size: .8rem; color: var(--texto-2); }
+.hist-botoes { display: flex; gap: 6px; flex-shrink: 0; }
+.mini { border: 1px solid var(--borda); background: var(--fundo); color: var(--texto-2); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: .78rem; font-weight: 600; }
+.mini.green.on { background: var(--verde); color: #08130b; border-color: var(--verde); }
+.mini.red.on { background: var(--vermelho); color: #1a0605; border-color: var(--vermelho); }
+.mini:hover { color: var(--texto); }
+
+/* ---- Chips adicionar ao bilhete ---- */
+.aposte-block { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--borda); }
+.aposte-titulo { font-size: .82rem; color: var(--dourado); font-weight: 700; margin-bottom: 8px; }
+.aposte-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-aposta {
+  background: var(--fundo); border: 1px solid var(--borda); color: var(--texto-2);
+  padding: 6px 11px; border-radius: 8px; cursor: pointer; font-size: .8rem;
+}
+.chip-aposta b { color: var(--texto); margin-left: 4px; }
+.chip-aposta:hover { border-color: var(--dourado); color: var(--texto); }
+.chip-aposta.selecionado { background: var(--verde-escuro); border-color: var(--verde); color: var(--verde); }
+.chip-aposta.selecionado b { color: var(--verde); }
+
+/* ---- Bilhete flutuante ---- */
+.bilhete { position: fixed; right: 18px; bottom: 18px; z-index: 90; width: 340px; max-width: calc(100vw - 24px); }
+.bilhete-toggle {
+  width: 100%; background: var(--dourado); color: #1a1a1a; border: none;
+  padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 1rem;
+  cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.4);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+#bilhete-contador {
+  background: #1a1a1a; color: var(--dourado); border-radius: 50%;
+  min-width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: .85rem; padding: 0 6px;
+}
+#bilhete-contador.zero { opacity: .5; }
+.bilhete-corpo {
+  display: none; background: var(--painel-2); border: 1px solid var(--dourado);
+  border-radius: 12px; margin-bottom: 8px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,.5);
+}
+.bilhete.aberto .bilhete-corpo { display: block; }
+.bilhete-cabec {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 14px; background: var(--painel); border-bottom: 1px solid var(--borda); font-weight: 700;
+}
+.bilhete-limpar { background: none; border: 1px solid var(--borda); color: var(--texto-2); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: .78rem; }
+.bilhete-limpar:hover { color: var(--vermelho); border-color: var(--vermelho); }
+.bilhete-aviso { max-height: 0; overflow: hidden; transition: all .2s; color: var(--vermelho); font-size: .82rem; padding: 0 14px; }
+.bilhete-aviso.visivel { max-height: 40px; padding: 8px 14px; }
+.bilhete-lista { max-height: 240px; overflow-y: auto; }
+.bilhete-vazio { padding: 18px 14px; color: var(--texto-2); font-size: .84rem; }
+.bilhete-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--borda); }
+.bi-info { display: grid; gap: 2px; }
+.bi-jogo { font-weight: 700; font-size: .85rem; }
+.bi-sel { font-size: .78rem; color: var(--texto-2); }
+.bi-sel b { color: var(--texto); }
+.bi-remover { background: none; border: none; color: var(--texto-2); cursor: pointer; font-size: .95rem; flex-shrink: 0; }
+.bi-remover:hover { color: var(--vermelho); }
+.bilhete-calc { padding: 12px 14px; background: var(--painel); border-top: 1px solid var(--borda); }
+.calc-stake { display: block; font-size: .85rem; color: var(--texto-2); margin-bottom: 10px; }
+.calc-stake input { width: 100%; margin-top: 5px; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--borda); background: var(--fundo); color: var(--texto); font-weight: 700; font-size: 1rem; }
+.calc-linhas { display: grid; gap: 6px; }
+.calc-linha { display: flex; justify-content: space-between; font-size: .88rem; }
+.calc-linha span:first-child { color: var(--texto-2); }
+.calc-odd { font-weight: 800; color: var(--dourado); }
+.calc-retorno { font-weight: 800; }
+.calc-lucro { font-weight: 800; color: var(--verde); }
+
+@media (max-width: 720px) {
+  .bilhete { right: 10px; left: 10px; bottom: 10px; width: auto; }
+  .bilhete-lista { max-height: 180px; }
+}
+
+/* ---- Modal ---- */
+.modal-fundo {
+  position: fixed; inset: 0; background: rgba(0,0,0,.7);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.modal-fundo.oculto { display: none; }
+.modal {
+  background: var(--painel-2); border: 1px solid var(--borda);
+  border-radius: 14px; padding: 26px; max-width: 460px; width: 92%;
+  position: relative; display: grid; gap: 12px; font-size: .92rem;
+}
+.modal h3 { font-size: 1.15rem; }
+.modal a { color: var(--dourado); }
+.modal input {
+  width: 100%; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid var(--borda); background: var(--fundo); color: var(--texto);
+}
+.modal-botoes { display: flex; gap: 10px; flex-wrap: wrap; }
+.modal-fechar {
+  position: absolute; top: 10px; right: 12px; background: none; border: none;
+  color: var(--texto-2); font-size: 1.1rem; cursor: pointer;
+}
+
+/* ---- Rodapé ---- */
+.rodape {
+  margin: 50px 0 30px; padding-top: 20px; border-top: 1px solid var(--borda);
+  color: var(--texto-2); font-size: .82rem;
+}
+.rodape a { color: var(--dourado); }
+.rodape-min { margin-top: 8px; font-size: .75rem; opacity: .7; }
+
+.vazio { color: var(--texto-2); padding: 20px; text-align: center; background: var(--painel); border-radius: var(--radius); }
+
+@media (max-width: 720px) {
+  .jogo-resumo { grid-template-columns: 50px 1fr 30px; }
+  .jogo-resumo .odd-melhor { display: none; }
+  .casa-linha { grid-template-columns: 32px 1fr 110px; }
+  .casa-linha .casa-stat:last-child { display: none; }
+  .hist-stats { grid-template-columns: repeat(2, 1fr); }
+  .hist-linha { flex-direction: column; align-items: flex-start; }
+}

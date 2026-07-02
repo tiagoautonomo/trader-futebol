@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetRadar BR — Análise de Jogos e Melhores Odds do Dia</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <meta name="theme-color" content="#f5b942" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="BetRadar BR" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <span class="logo-icon">⚽</span>
+        <span class="logo-text">Bet<strong>Radar</strong> BR</span>
+      </div>
+      <div class="topbar-right">
+        <span id="data-hoje" class="data-hoje"></span>
+        <button id="btn-instalar" class="btn-ghost oculto" title="Instalar como aplicativo">⬇️ Instalar app</button>
+        <button id="btn-config" class="btn-ghost" title="Configurar fonte de dados">⚙️ Dados</button>
+        <button id="btn-atualizar" class="btn-primary">↻ Atualizar</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="banner-modo" class="banner-modo"></div>
+
+    <!-- GUIA COMO COMEÇAR -->
+    <section id="guia-inicio" class="guia">
+      <div class="guia-topo">
+        <h2 class="guia-titulo">🚀 Como começar (passo a passo)</h2>
+        <button id="btn-fechar-guia" class="btn-ghost">Ocultar guia</button>
+      </div>
+      <div class="guia-passos">
+        <div class="passo">
+          <span class="passo-num">1</span>
+          <div><strong>Defina sua banca</strong><p>Informe na barra "Banca" quanto você separou só para apostar (dinheiro que pode perder sem afetar suas contas). Comece pequeno.</p></div>
+        </div>
+        <div class="passo">
+          <span class="passo-num">2</span>
+          <div><strong>Veja a oportunidade do dia</strong><p>O app calcula a aposta com maior <em>valor</em> (a odd paga mais do que a chance real) e quanto apostar pelo Critério de Kelly.</p></div>
+        </div>
+        <div class="passo">
+          <span class="passo-num">3</span>
+          <div><strong>Aposte na casa indicada</strong><p>Cada dica mostra em qual casa (Betano, Bet365, etc.) a odd está mais alta. Aposte lá o valor sugerido — nem mais, nem menos.</p></div>
+        </div>
+        <div class="passo">
+          <span class="passo-num">4</span>
+          <div><strong>Registre o resultado</strong><p>Depois do jogo, marque ✓ Green ou ✕ Red no histórico. O app mostra sua taxa de acerto, lucro e ROI ao longo do tempo.</p></div>
+        </div>
+      </div>
+      <div class="guia-glossario">
+        <span><strong>Odd</strong>: quanto você recebe por R$1 apostado (odd 2,00 = dobra).</span>
+        <span><strong>EV+</strong>: valor esperado positivo — no longo prazo, dá lucro.</span>
+        <span><strong>Kelly</strong>: fórmula que diz quanto apostar sem quebrar a banca.</span>
+        <span><strong>Green/Red</strong>: aposta que ganhou / perdeu.</span>
+      </div>
+      <p class="guia-aviso">⚠️ Nenhuma aposta é garantida. Aposte só o que pode perder. +18 anos.</p>
+    </section>
+
+    <!-- OPORTUNIDADE DE GANHO DO DIA -->
+    <section id="oportunidade" class="oportunidade oculto"></section>
+
+    <!-- MELHORES APOSTAS DO DIA -->
+    <section class="secao">
+      <h2 class="secao-titulo">🔥 Melhores Apostas do Dia</h2>
+      <p class="secao-sub">Seleções com maior valor esperado (EV+): a odd oferecida está acima da probabilidade real estimada pelo mercado. O valor de cada aposta é calculado pelo <strong>Critério de Kelly</strong>.</p>
+      <div class="kelly-bar">
+        <label>Banca: R$ <input type="number" id="input-banca" min="0" step="10" placeholder="1000" /></label>
+        <div class="kelly-frac">
+          <span>Kelly:</span>
+          <button class="frac-btn" data-frac="1">Cheio</button>
+          <button class="frac-btn" data-frac="0.5">½</button>
+          <button class="frac-btn ativo" data-frac="0.25">¼ (recomendado)</button>
+        </div>
+      </div>
+      <div id="picks-do-dia" class="picks-grid"></div>
+    </section>
+
+    <!-- RANKING DAS CASAS -->
+    <section class="secao">
+      <h2 class="secao-titulo">🏆 Qual casa está pagando melhor hoje?</h2>
+      <p class="secao-sub">Ranking por número de vezes que a casa ofereceu a melhor odd do mercado nos jogos de hoje.</p>
+      <div id="ranking-casas" class="ranking-grid"></div>
+    </section>
+
+    <!-- JOGOS DO DIA -->
+    <section class="secao">
+      <h2 class="secao-titulo">📅 Jogos do Dia — Comparador de Odds</h2>
+      <p class="secao-sub">Clique em um jogo para ver as odds de todas as casas. A melhor odd de cada resultado aparece destacada em verde.</p>
+      <div id="filtros-liga" class="filtros"></div>
+      <div id="lista-jogos" class="lista-jogos"></div>
+    </section>
+
+    <!-- HISTÓRICO E DESEMPENHO -->
+    <section class="secao">
+      <h2 class="secao-titulo">📈 Histórico & Desempenho</h2>
+      <p class="secao-sub">Os picks de cada dia são salvos automaticamente no seu navegador. Marque ✓ Green ou ✕ Red após os jogos para acompanhar sua taxa de acerto, lucro em unidades e ROI ao longo do tempo.</p>
+      <div id="historico" class="historico"></div>
+    </section>
+
+    <footer class="rodape">
+      <p><strong>Jogue com responsabilidade.</strong> Apostas envolvem risco real de perda financeira. Proibido para menores de 18 anos.
+      Este site é uma ferramenta de comparação e análise estatística — nenhuma aposta é garantida. Se o jogo deixou de ser diversão, procure ajuda: <a href="https://www.jogadoresanonimos.com.br" target="_blank">Jogadores Anônimos</a>.</p>
+      <p class="rodape-min">Análises baseadas em probabilidade implícita de mercado com remoção de margem (vig). Odds meramente ilustrativas no modo demonstração.</p>
+    </footer>
+  </div>
+
+  <!-- MODAL CONFIG -->
+  <div id="modal-config" class="modal-fundo oculto">
+    <div class="modal">
+      <h3>Fonte de dados</h3>
+      <p>No <strong>modo demonstração</strong>, o site usa jogos e odds simulados para você testar a análise.</p>
+      <p>Para odds <strong>reais e ao vivo</strong>, crie uma chave gratuita em
+        <a href="https://the-odds-api.com" target="_blank">the-odds-api.com</a> (500 consultas/mês grátis) e cole abaixo:</p>
+      <input type="text" id="input-apikey" placeholder="Sua API key da The Odds API" />
+      <div class="modal-botoes">
+        <button id="btn-salvar-key" class="btn-primary">Salvar e usar odds reais</button>
+        <button id="btn-modo-demo" class="btn-ghost">Usar modo demonstração</button>
+      </div>
+      <button id="btn-fechar-modal" class="modal-fechar">✕</button>
+    </div>
+  </div>
+
+  <!-- BILHETE / CALCULADORA FLUTUANTE -->
+  <div id="bilhete" class="bilhete">
+    <button id="bilhete-toggle" class="bilhete-toggle">
+      🎫 Bilhete <span id="bilhete-contador" class="zero">0</span>
+    </button>
+    <div class="bilhete-corpo">
+      <div class="bilhete-cabec">
+        <span>🎫 Bilhete & Calculadora</span>
+        <button id="bilhete-limpar" class="bilhete-limpar">Limpar</button>
+      </div>
+      <div id="bilhete-aviso" class="bilhete-aviso"></div>
+      <div id="bilhete-lista" class="bilhete-lista"></div>
+      <div class="bilhete-calc">
+        <label class="calc-stake">Valor da aposta: R$
+          <input type="number" id="bilhete-stake" min="0" step="5" placeholder="0,00" />
+        </label>
+        <div class="calc-linhas">
+          <div class="calc-linha"><span>Tipo</span><span id="bilhete-tipo">—</span></div>
+          <div class="calc-linha"><span>Odd total</span><span id="bilhete-odd" class="calc-odd">—</span></div>
+          <div class="calc-linha"><span>Retorno</span><span id="bilhete-retorno" class="calc-retorno">—</span></div>
+          <div class="calc-linha"><span>Lucro</span><span id="bilhete-lucro" class="calc-lucro">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
